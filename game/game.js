@@ -46,6 +46,7 @@ class Game {
         seq: this.player2.seq === 0 ? 1 : 0,
       };
     }
+    clearInterval(this.timer);
     this.SetTimer();
   }
 
@@ -54,22 +55,20 @@ class Game {
       if (!this.status) {
         if (
           typeof this.player1 !== "undefined" &&
-          typeof this.player2 !== "undefined"
+          this.player1 !== null &&
+          typeof this.player2 !== "undefined" &&
+          this.player2 !== null
         ) {
           if (this.player1?.seq) {
-            if (this.player2?.seq) {
-              this.player2.seq = this.player1?.seq;
-              this.player2?.socket.emit("seq", this.player2?.seq);
-              this.player1.seq = 0;
-              this.player1?.socket.emit("seq", this.player1?.seq);
-            }
+            this.player2.seq = this.player1?.seq;
+            this.player2?.socket.emit("seq", this.player2?.seq);
+            this.player1.seq = 0;
+            this.player1?.socket.emit("seq", this.player1?.seq);
           } else if (this.player2?.seq) {
-            if (this.player1?.seq) {
-              this.player1.seq = this.player2.seq;
-              this.player1?.socket.emit("seq", this.player1?.seq);
-              this.player2.seq = 0;
-              this.player2?.socket.emit("seq", this.player2?.seq);
-            }
+            this.player1.seq = this.player2.seq;
+            this.player1?.socket.emit("seq", this.player1?.seq);
+            this.player2.seq = 0;
+            this.player2?.socket.emit("seq", this.player2?.seq);
           }
         }
       }
